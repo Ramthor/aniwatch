@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+import { FaFilter } from "react-icons/fa";
 import { FaRandom } from "react-icons/fa";
 import { IoChatbubbles } from "react-icons/io5";
 const Header = () => {
   const [toggle, setToggle] = useState(true);
+  const [mobileSearch, setMobileSearch] = useState(false);
 
   const HandleToggle = () => {
     setToggle(!toggle);
+  };
+
+  const HandleSearch = () => {
+    setMobileSearch(!mobileSearch);
   };
 
   return (
@@ -22,15 +27,28 @@ const Header = () => {
           <Wrap>
             <img src="/images/logo.png" />
           </Wrap>
-          <Search>
-            <input type="text" placeholder="Search anime..." />
-            <button className="submit-btn">
-              <i>
-                <FaSearch />
-              </i>
-            </button>
-            <button className="filter-btn">Filter</button>
-          </Search>
+
+          <SearchContent>
+            {mobileSearch ? (
+              <button className="filter-btntwo">
+                <FaFilter />
+              </button>
+            ) : (
+              ""
+            )}
+            <Search className={mobileSearch ? "isactive" : "  isnotactive"}>
+              <input type="text" placeholder="Search anime..." />
+              <button className="submit-btn">
+                <i>
+                  <FaSearch />
+                </i>
+              </button>
+              <button className="filter-btn">
+                {mobileSearch ? "" : "Filter"}
+              </button>
+            </Search>
+          </SearchContent>
+
           <SocialMedia>
             <div className="join">
               <span>Join now</span>
@@ -84,7 +102,7 @@ const Header = () => {
           </Toggles>
         </MainNav>
         <LoginContent>
-          <MobileSearch>
+          <MobileSearch onClick={HandleSearch}>
             <FaSearch />
           </MobileSearch>
           <Login>
@@ -161,6 +179,7 @@ const Nav = styled.div`
 const MainNav = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
 `;
 const BurgerIcon = styled.div`
   height: 40px;
@@ -213,6 +232,39 @@ const Wrap = styled.div`
   @media only screen and (max-width: 575px) {
     width: 100px;
     margin-left: 10px;
+  }
+`;
+const SearchContent = styled.div`
+  .filter-btntwo {
+    display: none;
+  }
+  @media only screen and (max-width: 1299px) {
+    .filter-btntwo {
+      position: absolute;
+
+      padding: 10px;
+      top: 70px;
+      left: 0;
+      right: 0px;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      width: 40px;
+      background-color: #fafdff;
+    }
+    .isnotactive {
+      display: none;
+    }
+    .isactive {
+      display: flex;
+      position: absolute;
+      top: 70px;
+      left: 50px;
+      right: 0px;
+
+      width: calc(100vw - 100px);
+      background-color: #fafdff;
+    }
   }
 `;
 
@@ -269,15 +321,13 @@ const Search = styled.div`
     padding: 0 6px;
     border: none;
     z-index: 3;
-  }
 
-  @media only screen and (max-width: 759px) {
-    .active {
+    @media only screen and (max-width: 1299px) {
+      display: none;
     }
   }
 
-  @media only screen and (max-width: 1299px) {
-    display: none;
+  @media only screen and (max-width: 759px) {
   }
 `;
 
@@ -400,8 +450,12 @@ const LoginContent = styled.div`
   }
 `;
 const MobileSearch = styled.div`
-  display: flex;
-  align-items: center;
+  display: none;
+
+  @media only screen and (max-width: 1299px) {
+    display: flex;
+    align-items: center;
+  }
 `;
 const Login = styled.div`
   width: 85px;
@@ -432,13 +486,13 @@ const LoginBtn = styled.button`
 
   @media only screen and (max-width: 759px) {
     height: 40px;
-    width: 70px;
+    width: 60px;
     font-size: 14px;
   }
 
   @media only screen and (max-width: 575px) {
-    width: 50px;
-    height: 30px;
+    width: 55px;
+    height: 35px;
     font-size: 13px;
   }
 `;
